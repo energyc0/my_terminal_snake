@@ -1,5 +1,6 @@
 #include "snake_game.h"
 #include "snake.h"
+#include "game_board.h"
 #include "utils.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,9 +16,10 @@
 #define SNAKE_RIGHT 'd'
 
 int is_game_over = 0;
-char* game_board;
+
 struct snake player;
-struct window_borders win_border;
+snake_point point;
+
 int fcntl_flags;
 
 void on_key_press(int code);
@@ -37,10 +39,7 @@ void game_init(){
     nodelay(stdscr, true);
     curs_set(0);
     //inititalize game objects
-    win_border.l = 0;
-    win_border.r = COLS-1;
-    win_border.u = 0;
-    win_border.d = LINES-1;
+    init_game_board();
     init_snake(&player);
     
     struct sigaction sgnl;
@@ -70,8 +69,6 @@ void game_init(){
         is_game_over = 1;
         return;
     }
-    //allocate game board
-    game_board = calloc(win_border.d, sizeof(char[win_border.r]));
 
     //set draw timer
     struct itimerval draw_timer;
@@ -91,8 +88,8 @@ void game_loop(){
 
 void game_clear(){
     endwin();
-    printf("x: %d, y: %d\n", player.head->x, player.head->y);
-    free(game_board);
+    printf("x: %d, y: %d\n", player.head->px, player.head->py);
+    destroy_game_board();
     destroy_snake(&player);
     fcntl(0, F_SETFL, fcntl_flags);
 }
