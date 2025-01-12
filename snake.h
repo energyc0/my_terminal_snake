@@ -1,8 +1,8 @@
 #ifndef SNAKE_H
 #define SNAKE_H
 
-#define SNAKE_CELL_CHARACTER '#'
-#define SNAKE_HEAD_CHARACTER '*'
+#define SNAKE_CELL_CHARACTER '*'
+#define SNAKE_HEAD_CHARACTER '@'
 #define SNAKE_POINT_CHARACTER 'O'
 
 enum dir_t{
@@ -18,8 +18,6 @@ struct vector{
     int x;
     int y;
 };
-
-typedef struct vector snake_point;
 
 struct snake_cell{
     struct vector __pos;
@@ -41,5 +39,6 @@ int snake_logic();
 void snake_input(int ch);
 
 //checks gameboard and create randomly a point there
-void spawn_new_point();
+void spawn_new_spoint();
+void draw_spoint();
 #endif

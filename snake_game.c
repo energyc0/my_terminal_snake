@@ -9,7 +9,7 @@
 #include <fcntl.h>
 #include <sys/time.h>
 #include <unistd.h>
-
+#include <time.h>
 int is_game_over = 0;
 
 int fcntl_flags;
@@ -21,6 +21,7 @@ void on_interrupt(int code);
 void set_delay(struct itimerval* t, int ms);
 
 void game_init(){
+    srand(time(NULL));
     //initialize input
     fcntl(0, F_SETOWN, getpid());
     fcntl_flags = fcntl(0, F_GETFL);
@@ -33,6 +34,7 @@ void game_init(){
     //inititalize game objects
     init_game_board();
     init_snake();
+    spawn_new_spoint();
     
     struct sigaction sgnl;
     //SIGIO
@@ -93,7 +95,7 @@ void on_key_press(int code){
 void on_alarm(int code){
     if((is_game_over = snake_logic()))
         return;
-
+    draw_spoint();
     refresh();
 }
 

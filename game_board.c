@@ -2,17 +2,19 @@
 #include <stdlib.h>
 #include <curses.h>
 
-struct game_board gboard;
+struct game_board __gboard;
 
 void init_game_board(){
-    gboard.left_border = 0;
-    gboard.right_border = COLS-1;
-    gboard.upper_border = 0;
-    gboard.bottom_border = LINES-1;
+    __gboard.left_border = 0;
+    __gboard.right_border = COLS-1;
+    __gboard.upper_border = 0;
+    __gboard.bottom_border = LINES-1;
+
+    __gboard.board_size = GAME_BOARD_WIDTH * GAME_BOARD_HEIGHT;
     //allocate game board
-    gboard.board = calloc(gboard.bottom_border, sizeof(char[gboard.right_border]));
+    __gboard.board = calloc(LINES, sizeof(char[COLS]));
 }
 
 void destroy_game_board(){
-    free(gboard.board); 
+    free(__gboard.board); 
 }

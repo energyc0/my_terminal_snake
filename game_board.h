@@ -16,13 +16,17 @@ struct game_board{
     unsigned int board_size;
 };
 
-extern struct game_board gboard;
+extern struct game_board __gboard;
 
-#define GAME_BOARD_CELL(x,y) (gboard.board[x + y*gboard.right_border])
-#define LEFT_BORDER (gboard.left_border)
-#define RIGHT_BORDER (gboard.right_border)
-#define UPPER_BORDER (gboard.upper_border)
-#define BOTTOM_BORDER (gboard.bottom_border)
+#define GAME_BOARD_CELL(x,y) (__gboard.board[x + y*__gboard.right_border])
+#define GAME_BOARD_SIZE __gboard.board_size;
+#define LEFT_BORDER (__gboard.left_border)
+#define RIGHT_BORDER (__gboard.right_border)
+#define UPPER_BORDER (__gboard.upper_border)
+#define BOTTOM_BORDER (__gboard.bottom_border)
+
+#define GAME_BOARD_WIDTH RIGHT_BORDER
+#define GAME_BOARD_HEIGHT BOTTOM_BORDER
 //call after initscr()
 void init_game_board();
 void destroy_game_board();
