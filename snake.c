@@ -4,39 +4,54 @@
 #include <curses.h>
 
 extern struct game_board gboard;
+struct snake player;
 
 void move_cell(struct snake_cell* p);
 void change_cells_dir(struct snake_cell* p);
 struct snake_cell* add_new_cell(struct snake_cell* tail);
 
-void init_snake(struct snake* p){
-    p->head = malloc(sizeof(struct snake_cell));
-    p->head->d = START_SNAKE_DIRECTION;
-    p->head->px = gboard.right_border / 2;
-    p->head->py = gboard.bottom_border/2;
-    p->head->next = NULL;
+void init_snake(){
+    player.head = malloc(sizeof(struct snake_cell));
+    player.head->d = START_SNAKE_DIRECTION;
+    player.head->px = gboard.right_border / 2;
+    player.head->py = gboard.bottom_border/2;
+    player.head->next = NULL;
 
-    p->tail = add_new_cell(p->head);
+    player.tail = add_new_cell(player.head);
 }
 
-int snake_logic(struct snake* p){
+int snake_logic(){
     //erase previous snake cell
-    mvaddch(p->head->py, p->head->px, SNAKE_CELL_CHARACTER);
-    GAME_BOARD_CELL(p->head->px, p->head->py) = GBSNAKE_CELL;
+    mvaddch(player.head->py, player.head->px, SNAKE_CELL_CHARACTER);
+    GAME_BOARD_CELL(player.head->px, player.head->py) = GBSNAKE_CELL;
 
-    mvaddch(p->tail->py, p->tail->px, ' ');
-    GAME_BOARD_CELL(p->tail->px, p->tail->py) = GBNONE;
+    mvaddch(player.tail->py, player.tail->px, ' ');
+    GAME_BOARD_CELL(player.tail->px, player.tail->py) = GBNONE;
 
-    move_cell(p->head);
-    move_cell(p->tail);
+    move_cell(player.head);
+    move_cell(player.tail);
 
     //snake is out of game
-    if(p->head->px <= LEFT_BORDER || p->head->px >= RIGHT_BORDER ||
-     p->head->py <= UPPER_BORDER || p->head->py >= BOTTOM_BORDER ||
-     GAME_BOARD_CELL(p->head->px, p->head->py) == GBSNAKE_CELL)
+    if(player.head->px <= LEFT_BORDER || player.head->px >= RIGHT_BORDER ||
+     player.head->py <= UPPER_BORDER || player.head->py >= BOTTOM_BORDER ||
+     GAME_BOARD_CELL(player.head->px, player.head->py) == GBSNAKE_CELL)
         return 1;
-    mvaddch(p->head->py, p->head->px, SNAKE_HEAD_CHARACTER);
+    mvaddch(player.head->py, player.head->px, SNAKE_HEAD_CHARACTER);
     return 0;
+}
+
+void snake_input(int ch){
+    #define SNAKE_UP 'w'
+    #define SNAKE_DOWN 's'
+    #define SNAKE_LEFT 'a'
+    #define SNAKE_RIGHT 'd'
+    
+    switch(ch){
+        case SNAKE_UP: if(player.head->d != DOWN) player.head->d = UP; break;
+        case SNAKE_DOWN: if(player.head->d != UP)  player.head->d = DOWN; break;
+        case SNAKE_RIGHT: if(player.head->d != LEFT)  player.head->d = RIGHT; break;
+        case SNAKE_LEFT: if(player.head->d != RIGHT) player.head->d = LEFT; break;
+    }
 }
 
 void move_cell(struct snake_cell* p){
@@ -72,8 +87,8 @@ struct snake_cell* add_new_cell(struct snake_cell* tail){
     return ptr;
 }
 
-void destroy_snake(struct snake* p){
-    struct snake_cell* ptr = p->tail;
+void destroy_snake(){
+    struct snake_cell* ptr = player.tail;
     while (ptr) {
         struct snake_cell* n = ptr->next;
         free(ptr);
@@ -83,6 +98,6 @@ void destroy_snake(struct snake* p){
 
 #define POINT_SEARCH_FIELD 100
 
-void spawn_new_point(snake_point* p){
+void spawn_new_point(){
     
 }

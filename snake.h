@@ -34,11 +34,12 @@ struct snake{
     struct snake_cell* tail;
 };
 
-void destroy_snake(struct snake* p);
-void init_snake(struct snake* p);
+void destroy_snake();
+void init_snake();
 //return game state
-int snake_logic(struct snake* p);
+int snake_logic();
+void snake_input(int ch);
 
 //checks gameboard and create randomly a point there
-void spawn_new_point(snake_point* p);
+void spawn_new_point();
 #endif

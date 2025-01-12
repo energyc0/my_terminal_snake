@@ -10,15 +10,7 @@
 #include <sys/time.h>
 #include <unistd.h>
 
-#define SNAKE_UP 'w'
-#define SNAKE_DOWN 's'
-#define SNAKE_LEFT 'a'
-#define SNAKE_RIGHT 'd'
-
 int is_game_over = 0;
-
-struct snake player;
-snake_point point;
 
 int fcntl_flags;
 
@@ -40,7 +32,7 @@ void game_init(){
     curs_set(0);
     //inititalize game objects
     init_game_board();
-    init_snake(&player);
+    init_snake();
     
     struct sigaction sgnl;
     //SIGIO
@@ -88,24 +80,18 @@ void game_loop(){
 
 void game_clear(){
     endwin();
-    printf("x: %d, y: %d\n", player.head->px, player.head->py);
+    //printf("x: %d, y: %d\n", player.head->px, player.head->py);
     destroy_game_board();
-    destroy_snake(&player);
+    destroy_snake();
     fcntl(0, F_SETFL, fcntl_flags);
 }
 
 void on_key_press(int code){
-    int ch = getchar();
-    switch(ch){
-        case SNAKE_UP: if(player.head->d != DOWN) player.head->d = UP; break;
-        case SNAKE_DOWN: if(player.head->d != UP)  player.head->d = DOWN; break;
-        case SNAKE_RIGHT: if(player.head->d != LEFT)  player.head->d = RIGHT; break;
-        case SNAKE_LEFT: if(player.head->d != RIGHT) player.head->d = LEFT; break;
-    }
+    snake_input(getchar());
 }
 
 void on_alarm(int code){
-    if((is_game_over = snake_logic(&player)))
+    if((is_game_over = snake_logic()))
         return;
 
     refresh();
