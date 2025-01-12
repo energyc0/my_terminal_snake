@@ -25,6 +25,7 @@ struct snake{
     struct snake_cell* tail;
 };
 
+void destroy_snake(struct snake* p);
 void init_snake(struct snake* p);
 //return game state
 int snake_logic(struct snake* p);

@@ -90,10 +90,11 @@ void game_loop(){
 }
 
 void game_clear(){
-    free(game_board);
     endwin();
-    fcntl(0, F_SETFL, fcntl_flags);
     printf("x: %d, y: %d\n", player.head->x, player.head->y);
+    free(game_board);
+    destroy_snake(&player);
+    fcntl(0, F_SETFL, fcntl_flags);
 }
 
 void on_key_press(int code){

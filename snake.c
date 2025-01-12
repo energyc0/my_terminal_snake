@@ -63,7 +63,21 @@ struct snake_cell* add_new_cell(struct snake_cell* tail){
     struct snake_cell* ptr = malloc(sizeof(struct snake_cell));
     ptr->d = tail->d;
     ptr->next = tail;
-    ptr->x = tail->x;
-    ptr->y = tail->y;
+    switch (tail->d) {
+        case UP: ptr->y = tail->y - 1; ptr->x = tail->x;break;
+        case DOWN: ptr->y = tail->y + 1;ptr->x = tail->x;break;
+        case LEFT: ptr->x = tail->x + 1;ptr->y = tail->y;break;
+        case RIGHT: ptr->x = tail->x - 1;ptr->y = tail->y;break;
+        default: ptr->x = ptr->y = 0;
+    }
     return ptr;
+}
+
+void destroy_snake(struct snake* p){
+    struct snake_cell* ptr = p->tail;
+    while (ptr) {
+        struct snake_cell* n = ptr->next;
+        free(ptr);
+        ptr = n;
+    }
 }
