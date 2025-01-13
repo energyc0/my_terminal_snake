@@ -10,7 +10,7 @@ void init_game_board(){
     __gboard.upper_border = 0;
     __gboard.bottom_border = LINES-1;
 
-    __gboard.board_size = GAME_BOARD_WIDTH * GAME_BOARD_HEIGHT;
+    __gboard.board_size = COLS * LINES;
     //allocate game board
     __gboard.board = calloc(LINES, sizeof(char[COLS]));
 }

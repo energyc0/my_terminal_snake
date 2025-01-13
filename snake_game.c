@@ -2,14 +2,15 @@
 #include "snake.h"
 #include "game_board.h"
 #include "utils.h"
-#include <stdio.h>
 #include <stdlib.h>
-#include <curses.h>
+#include <string.h>
 #include <signal.h>
-#include <fcntl.h>
 #include <sys/time.h>
-#include <unistd.h>
 #include <time.h>
+#include <curses.h>
+#include <unistd.h>
+#include <fcntl.h>
+
 int is_game_over = 0;
 
 int fcntl_flags;
@@ -37,6 +38,7 @@ void game_init(){
     spawn_new_spoint();
     
     struct sigaction sgnl;
+    memset(&sgnl, 0, sizeof sgnl);
     //SIGIO
     sgnl.sa_handler = on_key_press;
     sigemptyset(&sgnl.sa_mask);

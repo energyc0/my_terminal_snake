@@ -5,6 +5,7 @@
 
 extern struct game_board __gboard;
 struct snake player;
+extern int is_game_over;
 
 typedef struct vector snake_point;
 snake_point spoint;
@@ -25,6 +26,8 @@ void init_snake(){
 
 int snake_logic(){
     //erase previous snake cell
+    if(is_game_over)
+        return  is_game_over;
     mvaddch(player.head->py, player.head->px, SNAKE_CELL_CHARACTER);
     GAME_BOARD_CELL(player.head->px, player.head->py) = GBSNAKE_CELL;
 
@@ -34,11 +37,11 @@ int snake_logic(){
     move_cell(player.head);
     move_cell(player.tail);
 
-    int cell = GAME_BOARD_CELL(player.head->px, player.head->py);
+    int cell;
     //snake is out of game
     if(player.head->px < LEFT_BORDER || player.head->px > RIGHT_BORDER ||
      player.head->py < UPPER_BORDER || player.head->py > BOTTOM_BORDER ||
-     cell == GBSNAKE_CELL)
+     (cell = GAME_BOARD_CELL(player.head->px, player.head->py)) == GBSNAKE_CELL)
         return 1;
 
     if(cell == GBPOINT){
