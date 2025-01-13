@@ -2,6 +2,7 @@
 #include "snake.h"
 #include "game_board.h"
 #include "utils.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <signal.h>
@@ -79,12 +80,18 @@ void game_init(){
 void game_loop(){
     while (!is_game_over) {
         pause();
-    }   
+    }
 }
 
 void game_clear(){
     endwin();
-    //printf("x: %d, y: %d\n", player.head->px, player.head->py);
+    //print player's score
+    int score = get_snake_score();
+    printf("Your score: %d\n", score);
+    if(score >= GAME_BOARD_SIZE - 1){
+        printf("You win!\n");
+    }
+
     destroy_game_board();
     destroy_snake();
     fcntl(0, F_SETFL, fcntl_flags);

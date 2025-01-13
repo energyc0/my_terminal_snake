@@ -30,6 +30,8 @@ struct snake_cell{
 struct snake{
     struct snake_cell* head;
     struct snake_cell* tail;
+    enum dir_t prev_frame_dir;
+    int score;
 };
 
 void destroy_snake();
@@ -41,4 +43,6 @@ void snake_input(int ch);
 //checks gameboard and create randomly a point there
 void spawn_new_spoint();
 void draw_spoint();
+
+int get_snake_score();
 #endif

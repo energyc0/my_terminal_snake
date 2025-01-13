@@ -19,7 +19,7 @@ struct game_board{
 extern struct game_board __gboard;
 
 #define GAME_BOARD_CELL(x,y) (__gboard.board[x + y*__gboard.right_border])
-#define GAME_BOARD_SIZE __gboard.board_size;
+#define GAME_BOARD_SIZE (__gboard.board_size)
 #define LEFT_BORDER (__gboard.left_border)
 #define RIGHT_BORDER (__gboard.right_border)
 #define UPPER_BORDER (__gboard.upper_border)
